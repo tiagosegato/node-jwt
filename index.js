@@ -5,8 +5,7 @@ const app = express();
 const PORT = 3000;
 
 // Chave secreta para assinar o JWT. 
-//Em um projeto real, isso DEVE estar em uma variável de ambiente (.env)!
-const JWT_SECRET = 'seu-segredo-super-secreto';
+const JWT_SECRET = 'seu-segredo-super-secreto'; // Em um projeto real, isso DEVE estar em uma variável de ambiente (.env)!
 
 app.use(express.json());
 
@@ -44,10 +43,8 @@ function verificaJWT(req, res, next) {
     if (!authHeader) {
         return res.status(401).json({ mensagem: 'Token de autenticação não fornecido.' });
     }
-
     // O token vem no formato "Bearer <token>"
     const token = authHeader.split(' ')[1]; //dividindo a string em 2, baseado no " ", e pegando apenas a posição 1
-
     // Verifica se o token é válido
     jwt.verify(token, JWT_SECRET, (err, decoded) => {
         if (err) {
@@ -57,7 +54,6 @@ function verificaJWT(req, res, next) {
             }
             return res.status(401).json({ mensagem: 'Token inválido.' });
         }
-
         // Se o token for válido, os dados decodificados são adicionados à requisição para uso posterior.
         req.usuarioLogado = decoded;
         next(); // Permite que a requisição prossiga para a rota

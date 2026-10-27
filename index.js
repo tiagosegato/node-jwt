@@ -5,7 +5,8 @@ const app = express();
 const PORT = 3000;
 
 // Chave secreta para assinar o JWT. 
-const JWT_SECRET = 'seu-segredo-super-secreto'; // Em um projeto real, isso DEVE estar em uma variável de ambiente (.env)!
+const JWT_SECRET = 'seu-segredo-super-secreto';
+// Em um projeto real, isso DEVE estar em uma variável de ambiente (.env)!
 
 app.use(express.json());
 
@@ -30,7 +31,8 @@ app.post('/login', (req, res) => {
     }
 
     // 3. Se as credenciais estiverem corretas, gerar o token
-    const token = jwt.sign({ userId: user.id, usuario: user.usuario }, JWT_SECRET, { expiresIn: '15m' }); // Token expira em 15 minutos
+    const token = jwt.sign({ userId: user.id, usuario: user.usuario },
+        JWT_SECRET, { expiresIn: '15m' }); // Token expira em 15 minutos
 
     // 4. Enviar o token para o cliente
     res.json({ mensagem: 'Login bem-sucedido!', token: token });
@@ -44,7 +46,8 @@ function verificaJWT(req, res, next) {
         return res.status(401).json({ mensagem: 'Token de autenticação não fornecido.' });
     }
     // O token vem no formato "Bearer <token>"
-    const token = authHeader.split(' ')[1]; //dividindo a string em 2, baseado no " ", e pegando apenas a posição 1
+    const token = authHeader.split(' ')[1];
+    //dividindo a string em 2, baseado no " ", e pegando apenas a posição 1
     // Verifica se o token é válido
     jwt.verify(token, JWT_SECRET, (err, decoded) => {
         if (err) {
